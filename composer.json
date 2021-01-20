@@ -1,0 +1,17 @@
+{
+  "name": "1c-bitrix/widget",
+  "authors": [
+    {
+      "name": "Mikhail Chistilin",
+      "email": "mikhail.chistilin@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Widget\\": "local/php_interface/include/Widget/"
+    }
+  },
+  "require": {
+    "devscreencast/json-response": "^1.1"
+  }
+}
