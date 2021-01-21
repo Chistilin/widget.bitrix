@@ -1,0 +1,8 @@
+{
+  "name": "widget/bitrix",
+  "description": "Integration widget in 1C Bitrix",
+  "require": {
+    "php": ">=7.2",
+    "another-vendor/package": "1.*"
+  }
+}
