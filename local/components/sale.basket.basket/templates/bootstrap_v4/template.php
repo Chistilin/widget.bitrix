@@ -161,23 +161,29 @@ if (empty($arResult['ERROR_MESSAGE'])) {
     ?>
     <?
 
-    session_start();
-    if (empty($_SESSION['user_id'])) {
-        $_SESSION['user_id'] = mt_rand(100, 1000);
+    $session = \Bitrix\Main\Application::getInstance()->getSession();
+    if (!$session->has('user_id')) {
+        $session->set('user_id', mt_rand(100, 1000));
     }
 
     $widgetDeals = new ClientWidgetComponent();
 
-    if (empty($_SESSION['token'])) {
-        $_SESSION['token'] = randString(40);
-        $widgetDeals->setToken($_SESSION['token']);
+    if (!$session->has('token')) {
+        $session->set('token', randString(40));
+        $widgetDeals->setToken($session['token']);
+    }
+    else{
+        $widgetDeals->setToken($session['token']->token);
     }
 
     $resultWidget = [];
-    $widgetDeals->setUserId($_SESSION['user_id']);
+    $widgetDeals->setUserId($session->get('user_id'));
     $widgetDeals->setUserIp($_SERVER['REMOTE_ADDR']);
 
-    $_SESSION['token'] = $widgetDeals->getToken();
+    if ($session->has('token')) {
+        $session->set('token', $widgetDeals->getToken());
+    }
+
     $resultWidget = $widgetDeals->getWidgetReference(1)->getResult();
 
     $data['widget_deals_url'] = $resultWidget['url'] ?? null;
