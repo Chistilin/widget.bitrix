@@ -6,27 +6,27 @@ use Widget\ClientWidgetComponent;
 use Widget\DiscountWidgetComponent;
 use Widget\ExecuteWidgetComponent;
 
-session_start();
 header('Content-Type: application/json charset=utf-8');
+$session = \Bitrix\Main\Application::getInstance()->getSession();
 
 $widgetAction = null;
 if (!empty($_GET['act'])) {
     $widgetAction = $_GET['act'];
 }
 
-if (empty($_SESSION['user_id'])) {
+if (!$session->has('user_id')) {
     echo json_encode('Session user_id is empty');
     return 1;
 }
 
-if (empty($_SESSION['token'])) {
+if (!$session->has('token')) {
     echo json_encode('Session token is empty');
     return 1;
 }
 
 $result = null;
 $widgetDeals = new ClientWidgetComponent();
-$executeWidget = new ExecuteWidgetComponent($widgetDeals, $_SESSION['user_id'], $_SESSION['token'], $_SERVER['REMOTE_ADDR']);
+$executeWidget = new ExecuteWidgetComponent($widgetDeals, $session['user_id'], $session['token'], $_SERVER['REMOTE_ADDR']);
 
 /*
  * кликаем по кнопке и получаем остаток по времени и другие данные

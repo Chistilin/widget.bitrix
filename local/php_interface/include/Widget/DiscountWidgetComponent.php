@@ -2,12 +2,16 @@
 
 namespace Widget;
 
+use Bitrix\Iblock;
+use Bitrix\Main;
+use Bitrix\Main\Data\Cache;
 use Bitrix\Sale\Internals\DiscountCouponTable;
+use CBitrixComponent;
 use CModule;
 use CSaleDiscount;
 use DateTime;
 use Widget\ClientWidgetComponent;
-use Bitrix\Main\Loader;
+use Bitrix\Sale;
 
 /*
  * $discountId = ID скидочной акции в системе Bitrix
@@ -36,10 +40,9 @@ class DiscountWidgetComponent
         $orderUse,
         $discountValue)
     {
-        if (CModule::IncludeModule('sale')) {
-            $this->setDiscountSale($discountId,$discountValue);
-            DiscountCouponTable::add($this->generateFiledCoupon($discountId, $code, $maxUse, $orderUse));
-        }
+        \Bitrix\Main\Loader::includeModule("sale");
+        $this->setDiscountSale($discountId, $discountValue);
+        DiscountCouponTable::add($this->generateFiledCoupon($discountId, $code, $maxUse, $orderUse));
     }
 
     /**
@@ -65,7 +68,8 @@ class DiscountWidgetComponent
         $discountCollectionBitrix = CSaleDiscount::GetByID($discountId);
 
         $newDiscount = unserialize($discountCollectionBitrix["ACTIONS"]);
-        $newDiscount['CHILDREN'][0]['DATA']["Value"] = floor($discount);
+
+        $newDiscount['CHILDREN'][1]['DATA']["Value"] = floor($discount);
 
         $discountCollectionBitrix["ACTIONS"] = $newDiscount;
 
