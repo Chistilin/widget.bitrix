@@ -3,6 +3,6 @@
   "description": "Integration widget in 1C Bitrix",
   "require": {
     "php": ">=7.2",
-    "another-vendor/package": "1.*"
+    "1c-bitrix/widget": "1.*"
   }
 }
